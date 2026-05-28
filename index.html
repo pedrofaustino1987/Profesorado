@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spiral Notebook</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #d6d3d1;
+      padding: 1.5rem;
+      padding-bottom: 5rem;
+    }
+
+    .notebook {
+      display: flex;
+      width: min(90vw, 740px);
+      aspect-ratio: 210 / 148;
+      position: relative;
+    }
+
+    .cover-back {
+      width: calc(50% - 20px);
+      background: #1c1917;
+      border-radius: 8px 0 0 8px;
+      position: relative;
+      box-shadow: -4px 4px 12px rgba(0,0,0,0.3), inset 0 0 30px rgba(0,0,0,0.15);
+      z-index: 1;
+      flex-shrink: 0;
+    }
+    .cover-back::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 8px 0 0 8px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%, rgba(255,255,255,0.02) 100%);
+    }
+
+    .cover-spine {
+      width: 40px;
+      background: #1c1917;
+      position: relative;
+      z-index: 5;
+      flex-shrink: 0;
+      box-shadow: inset 2px 0 8px rgba(0,0,0,0.2), inset -2px 0 8px rgba(0,0,0,0.2);
+    }
+    .cover-spine::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 0; bottom: 0;
+      width: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+    .cover-spine::after {
+      content: '';
+      position: absolute;
+      right: 8px; top: 0; bottom: 0;
+      width: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .cover-front {
+      width: calc(50% - 20px);
+      background: #1c1917;
+      border-radius: 0 8px 8px 0;
+      position: relative;
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.3), inset 0 0 30px rgba(0,0,0,0.15);
+      z-index: 1;
+      flex-shrink: 0;
+    }
+    .cover-front::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 0 8px 8px 0;
+      background: linear-gradient(225deg, rgba(255,255,255,0.04) 0%, transparent 50%, rgba(255,255,255,0.02) 100%);
+    }
+
+    .page-left, .page-right {
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      width: calc(50% - 26px);
+      z-index: 3;
+      border-radius: 2px;
+      background-color: #fff;
+      background-image:
+        linear-gradient(to right, transparent 47px, #fca5a5 47px, #fca5a5 49px, transparent 49px),
+        repeating-linear-gradient(to bottom, transparent, transparent 31px, #e2e0dd 31px, #e2e0dd 32px);
+      background-size: 100% 100%, 100% 32px;
+      background-position: 0 0, 0 24px;
+      padding: 14px 16px 14px 54px;
+      overflow: hidden;
+    }
+    .page-left {
+      left: 6px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.08);
+    }
+    .page-left::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 12px;
+      background: linear-gradient(to left, rgba(0,0,0,0.04), transparent);
+      pointer-events: none;
+    }
+    .page-right {
+      right: 6px;
+      box-shadow: -2px 2px 6px rgba(0,0,0,0.08);
+    }
+    .page-right::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 12px;
+      background: linear-gradient(to right, rgba(0,0,0,0.04), transparent);
+      pointer-events: none;
+    }
+
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+    .page-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(11px, 1.7vw, 16px);
+      font-weight: 600;
+      color: #1c1917;
+      line-height: 1.3;
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .page-content h1 span {
+      display: block;
+      width: 36px;
+      height: 2px;
+      background: #b45309;
+      margin-top: 5px;
+    }
+    .page-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(9px, 1.4vw, 13px);
+      font-weight: 600;
+      color: #1c1917;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      margin-top: 14px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e7e5e4;
+    }
+    .page-content .item {
+      margin-bottom: 8px;
+      padding-left: 10px;
+      position: relative;
+    }
+    .page-content .item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #b45309;
+    }
+    .page-content .item.alt::before {
+      background: #78716c;
+    }
+    .page-content .item p {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(7px, 1vw, 9.5px);
+      color: #44403c;
+      line-height: 1.5;
+    }
+    .page-content .item p strong {
+      color: #1c1917;
+      font-weight: 600;
+    }
+    .page-content .item p em {
+      font-style: italic;
+      color: #78716c;
+    }
+    .page-content .quote {
+      margin: 8px 0;
+      padding: 6px 10px;
+      border-left: 2px solid #b45309;
+      background: rgba(180,83,9,0.04);
+      border-radius: 0 3px 3px 0;
+    }
+    .page-content .quote p {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(7px, 1vw, 9.5px);
+      color: #57534e;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .spiral {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      bottom: 0;
+      width: 48px;
+      z-index: 10;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .tabs {
+      position: absolute;
+      right: -18px;
+      top: 0;
+      bottom: 0;
+      width: 24px;
+      z-index: 15;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      padding: 20px 0;
+    }
+    .tab {
+      width: 18px;
+      height: 60px;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      transition: all 200ms ease;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      border: 1px solid rgba(0,0,0,0.15);
+      border-left: none;
+    }
+    .tab:hover {
+      transform: translateX(-3px);
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+    }
+    .tab-1 { background: #3b82f6; }
+    .tab-2 { background: #22c55e; }
+    .tab-3 { background: #ec4899; }
+    .tab-4 { background: #f59e0b; }
+
+    .page-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .page-nav button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #1c1917;
+      color: #fafaf9;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 200ms ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .page-nav button:hover:not(:disabled) {
+      background: #44403c;
+      transform: scale(1.05);
+    }
+    .page-nav button:disabled {
+      background: #a8a29e;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .page-nav span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: #78716c;
+      letter-spacing: 0.05em;
+      min-width: 60px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notebook">
+    <div class="cover-back"></div>
+    <div class="cover-spine"></div>
+    <div class="cover-front"></div>
+
+    <div class="page-left" id="page-left">
+      <div class="page-content" id="left-content"></div>
+    </div>
+    <div class="page-right" id="page-right">
+      <div class="page-content" id="right-content"></div>
+    </div>
+
+    <div class="spiral">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="sp" patternUnits="userSpaceOnUse" width="48" height="24">
+            <ellipse cx="24" cy="6" rx="24" ry="6" fill="#1c1917"/>
+            <ellipse cx="24" cy="4" rx="16" ry="2" fill="none" stroke="#57534e" stroke-width="0.5" opacity="0.4"/>
+            <rect x="6" y="12" width="36" height="12" rx="1.5" fill="#f5f5f4" stroke="#e7e5e4" stroke-width="0.2"/>
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="48" height="3000" fill="url(#sp)"/>
+      </svg>
+    </div>
+
+    <div class="tabs">
+      <div class="tab tab-1"></div>
+      <div class="tab tab-2"></div>
+      <div class="tab tab-3"></div>
+      <div class="tab tab-4"></div>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <button id="prev-btn" disabled>←</button>
+    <span id="page-info">1 / 1</span>
+    <button id="next-btn" disabled>→</button>
+  </div>
+
+  <script>
+    const allItems = [
+      '<h1>El sentido de la formaci&oacute;n docente<span></span></h1>',
+      '<div class="item"><p><strong>Reflexi&oacute;n</strong></p></div>',
+      '<div class="item alt"><p>Una acci&oacute;n vuelve sobre s&iacute; misma</p></div>',
+      '<div class="item"><p>Postulan un v&iacute;nculo entre dos objetos o sujetos</p></div>',
+      '<div class="item alt"><p>En el campo de la formaci&oacute;n docente podemos hablar de un <strong>hacer que implica un decir</strong> de un individuo a otro, o a s&iacute; mismo</p></div>',
+      '<div class="item"><p>Obtener nuevas comprensiones y apreciaciones</p></div>',
+      '<div class="item alt"><p><strong>Describir los procesos reflexivos de los docentes:</strong> reflexi&oacute;n en la acci&oacute;n, metacognici&oacute;n, aprendizaje reflexivo, introspecci&oacute;n, retorno sobre s&iacute; mismo</p></div>',
+      '<div class="item"><p>El pensamiento o la reflexi&oacute;n es el <strong>discernimiento de la relaci&oacute;n</strong> que existe entre lo que tratamos de hacer y lo que ocurre como consecuencia</p></div>',
+      '<div class="item alt"><p><em>El pensar es un proceso de indagaci&oacute;n, de observar las cosas</em> (Dewey, 1989: 171)</p></div>',
+      '<div class="item"><p>La reflexi&oacute;n como un <strong>proceso cognitivo activo y deliberativo</strong> que incluye creencias y conocimientos de los profesores</p></div>',
+      '<div class="item alt"><p>Dise&ntilde;ar algo para salir de la incertidumbre, convocar a los conocimientos y experiencias anteriores y proceder a su cr&iacute;tica para hallar <strong>fundamentos te&oacute;ricos s&oacute;lidos</strong>, revisar y ampliar la observaci&oacute;n de los datos, as&iacute; como hurgar en la memoria para dar con circunstancias an&aacute;logas que ayuden a replantear el problema</p></div>',
+      '<div class="quote"><p>Es un proceso de inferencia donde se produce &ldquo;salto de lo conocido a lo desconocido&rdquo;</p></div>',
+      '<div class="item"><p>Las investigaciones sobre la reflexi&oacute;n acerca de la <strong>pr&aacute;ctica docente</strong> cobran fuerza a partir de los programas de estudio en relaci&oacute;n con &ldquo;el pensamiento del profesor&rdquo;</p></div>',
+      '<div class="item alt"><p>Una pregunta interesante que se formula <em>Eliane Ricard Fersing (1999)</em> es si es necesario debatir la relevancia de la <strong>pr&aacute;ctica reflexiva</strong> cuando uno trata de ser un docente, o si el <strong>ser docente ya implica una actividad reflexiva</strong></p></div>',
+      '<div class="item"><p>La reflexi&oacute;n no ten&iacute;a lugar como objeto de estudio porque estaban centrados solo en la <strong>actuaci&oacute;n de la propia labor pedag&oacute;gica</strong></p></div>',
+      '<div class="item alt"><p><strong>Analizar proyectos de formaci&oacute;n</strong> o de mejora de la pr&aacute;ctica docente</p></div>',
+      '<h2>Espacio, tiempo y condiciones para la reflexi&oacute;n</h2>',
+      '<div class="item"><p>La reflexi&oacute;n es una <strong>forma de pensamiento y una disposici&oacute;n</strong>. La distinci&oacute;n se&ntilde;alada solo intenta discriminar la acci&oacute;n rutinaria, impulsiva, de aquella persistente que muestra una <strong>actitud comprometida y una mente abierta</strong> que considera la pr&aacute;ctica a la luz de conocimientos y creencias <em>(Nofke y Brennan, 1998)</em></p></div>',
+      '<div class="item alt"><p>Existen <strong>diferentes tiempos de reflexi&oacute;n</strong>, ligados al momento en que se est&aacute; actuando, al finalizar la acci&oacute;n y sobre la propia reflexi&oacute;n</p></div>',
+      '<div class="item"><p>La reflexi&oacute;n en la acci&oacute;n poseer una <strong>funci&oacute;n cr&iacute;tica</strong> y pone en cuesti&oacute;n la estructura de suposici&oacute;n del conocimiento en la acci&oacute;n</p></div>',
+      '<div class="item alt"><p>Pensamos de manera cr&iacute;tica sobre el pensamiento que nos trajo esta situaci&oacute;n de apuro o a esta oportunidad y durante el proceso podemos <strong>reestructrar estrategias de acci&oacute;n</strong> as&iacute; como la comprensi&oacute;n de los fen&oacute;menos o las maneras de formular los problemas <em>(Sch&ouml;n, 1987: 3)</em></p></div>',
+      '<div class="item"><p><em>Liston y Zeichner (1996)</em> afirman que no podemos hablar de reflexi&oacute;n docente si este no se pregunta alguna vez por los <strong>valores que gu&iacute;an su trabajo</strong>, el contexto en el que lo hace y las presunciones y supuestos con los que desarrolla su tarea</p></div>',
+      '<h2>Modelos te&oacute;ricos para comprender el aprendizaje reflexivo</h2>',
+      '<div class="item"><p><em>Argyris y Sch&ouml;n (1974)</em> refiere a la relaci&oacute;n entre <strong>&ldquo;teor&iacute;as en uso&rdquo;</strong> y <strong>&ldquo;teor&iacute;as adoptadas&rdquo;</strong></p></div>',
+      '<div class="item alt"><p>Las personas <strong>planean, aplican y revisan</strong> sus acciones</p></div>',
+      '<div class="item"><p>Pueden conceptualizarse y verbalizarse</p></div>',
+      '<div class="item alt"><p>Las <strong>teor&iacute;as de uso</strong> gobiernan nuestras conductas y tienden a ser <strong>estructuras t&aacute;citas</strong></p></div>',
+      '<div class="item"><p>Las <strong>teor&iacute;as adoptadas</strong> son lo que pensamos o que deber&iacute;a hacerse</p></div>',
+      '<div class="item alt"><p>En la teor&iacute;a adoptada tiene que ver la <strong>acci&oacute;n para el contexto</strong></p></div>',
+      '<div class="item"><p>Es donde obedece y comunica a otros</p></div>',
+      '<div class="item alt"><p>La <strong>brecha entre la teor&iacute;a en uso y la teor&iacute;a adoptada</strong> delimita un espacio din&aacute;mico para la reflexi&oacute;n y para el di&aacute;logo</p></div>',
+      '<div class="item"><p>Mediada por la escritura, la reflexi&oacute;n puede realizarse con posterioridad en <strong>grupos de tutor&iacute;a</strong> e, incluso, en el intercambio con otros colegas que se est&eacute;n formando</p></div>',
+    ];
+
+    let pages = [];
+    let currentSpread = 0;
+    let totalSpreads = 1;
+
+    function paginate() {
+      pages = [];
+      const measurePage = document.getElementById('page-left');
+      const measureContent = document.getElementById('left-content');
+
+      let remaining = [...allItems];
+
+      while (remaining.length > 0) {
+        measureContent.innerHTML = '';
+        const pageItems = [];
+        let i = 0;
+
+        for (i = 0; i < remaining.length; i++) {
+          const prevHTML = measureContent.innerHTML;
+          measureContent.innerHTML += remaining[i];
+
+          if (measurePage.scrollHeight > measurePage.clientHeight + 2 && pageItems.length > 0) {
+            measureContent.innerHTML = prevHTML;
+            break;
+          }
+          pageItems.push(remaining[i]);
+        }
+
+        pages.push(pageItems.join(''));
+        remaining = remaining.slice(pageItems.length);
+      }
+
+      measureContent.innerHTML = '';
+      document.getElementById('right-content').innerHTML = '';
+
+      totalSpreads = Math.ceil(pages.length / 2);
+      currentSpread = 0;
+      showSpread();
+    }
+
+    function showSpread() {
+      const leftContent = document.getElementById('left-content');
+      const rightContent = document.getElementById('right-content');
+
+      leftContent.innerHTML = pages[currentSpread * 2] || '';
+      rightContent.innerHTML = pages[currentSpread * 2 + 1] || '';
+
+      document.getElementById('page-info').textContent = `${currentSpread + 1} / ${totalSpreads}`;
+      document.getElementById('prev-btn').disabled = currentSpread === 0;
+      document.getElementById('next-btn').disabled = currentSpread >= totalSpreads - 1;
+    }
+
+    document.getElementById('prev-btn').addEventListener('click', () => {
+      if (currentSpread > 0) {
+        currentSpread--;
+        showSpread();
+      }
+    });
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      if (currentSpread < totalSpreads - 1) {
+        currentSpread++;
+        showSpread();
+      }
+    });
+
+    window.addEventListener('load', paginate);
+    window.addEventListener('resize', () => {
+      paginate();
+    });
+  </script>
+
+</body>
+</html>
