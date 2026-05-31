@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APUNTES</title>
+  <title>Spiral Notebook</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -135,22 +135,22 @@
       content:'';position:absolute;left:0;top:6px;width:4px;height:4px;border-radius:50%;background:#b45309;
     }
     .page-content .item.alt::before{background:#78716c}
+    .page-content .item.no-bullet{padding-left:0}
+    .page-content .item.no-bullet::before{display:none}
+
     .page-content .item p{
       font-family:'Inter',sans-serif;font-size:clamp(7px,1vw,9.5px);color:#44403c;line-height:1.5;
     }
     .page-content .item p strong{color:#1c1917;font-weight:600}
     .page-content .item p em{font-style:italic;color:#78716c}
-    .page-content .quote{
-      margin:8px 0;padding:6px 10px;border-left:2px solid #b45309;
-      background:rgba(180,83,9,0.04);border-radius:0 3px 3px 0;
+    
+    .game-btn-notebook {
+      display:block; width:100%; margin-top:15px; padding:10px; border:none;
+      background:#e74c3c; color:white; font-family:'Inter',sans-serif; font-size:10px;
+      font-weight:700; letter-spacing:0.08em; text-transform:uppercase; border-radius:4px;
+      cursor:pointer; transition:background 0.2s;
     }
-    .page-content .quote p{
-      font-family:'Inter',sans-serif;font-size:clamp(7px,1vw,9.5px);color:#57534e;line-height:1.5;font-style:italic;
-    }
-
-    .page-content .diagram{
-      display:block;width:100%;max-width:180px;margin:16px auto 12px auto;
-    }
+    .game-btn-notebook:hover { background:#c0392b; }
 
     .spiral{
       position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:48px;
@@ -188,42 +188,42 @@
     .flip-page-shadow.next{left:calc(50% - 10px);background:linear-gradient(to right,rgba(0,0,0,0.18),transparent)}
     .flip-page-shadow.prev{right:calc(50% - 10px);background:linear-gradient(to left,rgba(0,0,0,0.18),transparent)}
 
-    /* ── Listado de Señaladores (Estilo Botones Horizontales) ── */
     .tabs{
-      position:absolute;right:-145px;top:6px;bottom:6px;width:135px;z-index:15;
-      display:flex;flex-direction:column;justify-content:center;gap:6px;
+      position:absolute;right:-115px;top:50%;transform:translateY(-50%);
+      z-index:15;
+      display:flex;flex-direction:column;justify-content:center;gap:4px;padding:10px 0;
     }
     .tab{
-      padding: 11px 14px;
-      border-radius: 8px;cursor:pointer;
+      border-radius:0 8px 8px 0;cursor:pointer;
       transition:all 250ms cubic-bezier(0.4,0,0.2,1);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      display:flex;align-items:center;position:relative;
-      font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
-      letter-spacing:0.04em;text-transform:uppercase;
-      color:#fff; text-align: left;
-      border: 1px solid rgba(0,0,0,0.1);
+      box-shadow:2px 2px 6px rgba(0,0,0,0.2);border:1px solid rgba(0,0,0,0.12);border-left:none;
+      display:flex;align-items:center;justify-content:center;position:relative;
+      padding:8px 14px;
     }
-    .tab:hover{
-      transform:translateX(-5px);
-      box-shadow:3px 3px 8px rgba(0,0,0,0.3);
-      filter: brightness(1.1);
-    }
-    .tab.active{
-      transform:translateX(-10px);
-      box-shadow:4px 3px 10px rgba(0,0,0,0.35);
-      outline: 2px solid rgba(255,255,255,0.7);
-      outline-offset: -2px;
+    .tab:hover{transform:translateX(-4px);box-shadow:3px 3px 10px rgba(0,0,0,0.3)}
+    .tab.active{transform:translateX(-8px);box-shadow:4px 3px 12px rgba(0,0,0,0.35)}
+    .tab-text{
+      font-family:'Inter',sans-serif;font-size:8.5px;font-weight:700;
+      letter-spacing:0.1em;text-transform:uppercase;line-height:1;color:#fff;
+      white-space:nowrap;
     }
 
-    .tab-1{background:#3b82f6} /* Azul */
-    .tab-2{background:#22c55e} /* Verde */
-    .tab-3{background:#ec4899} /* Rosa */
-    .tab-4{background:#f59e0b} /* Naranja */
-    .tab-5{background:#8b5cf6} /* Púrpura */
-    .tab-6{background:#14b8a6} /* Cian / Teal */
-    .tab-7{background:#ef4444} /* Rojo */
-    .tab-8{background:#0ea5e9} /* Sky Blue */
+    .tab-1{background:#3b82f6}
+    .tab-2{background:#22c55e}
+    .tab-3{background:#ec4899}
+    .tab-4{background:#f59e0b}
+    .tab-5{background:#8b5cf6}
+    .tab-6{background:#14b8a6}
+    .tab-7{background:#ef4444}
+    .tab-8{background:#6366f1}
+    .tab-9{background:#78716c}
+
+    .tab.pulse{animation:tabPulse 0.4s ease}
+    @keyframes tabPulse{
+      0%{filter:brightness(1)}
+      50%{filter:brightness(1.4)}
+      100%{filter:brightness(1)}
+    }
 
     .page-nav{
       display:flex;align-items:center;gap:1rem;margin-top:1.5rem;
@@ -244,6 +244,23 @@
       letter-spacing:0.05em;min-width:60px;text-align:center;
     }
 
+    .toast{
+      position:fixed;bottom:2rem;left:50%;
+      transform:translateX(-50%) translateY(10px);
+      background:#1c1917;color:#fafaf9;
+      padding:0.55rem 1.1rem;border-radius:8px;
+      font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:500;
+      opacity:0;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);
+      z-index:1000;pointer-events:none;
+      box-shadow:0 4px 16px rgba(0,0,0,0.35);
+      display:flex;align-items:center;gap:7px;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .toast svg{width:14px;height:14px;flex-shrink:0}
+
+    .page-fade-out{opacity:0 !important;transition:opacity 0.2s ease !important}
+    .page-fade-in{opacity:0;transition:opacity 0.25s ease 0.05s !important}
+
     .kb-hint{
       position:fixed;bottom:0.75rem;left:50%;transform:translateX(-50%);
       font-family:'Inter',sans-serif;font-size:0.6rem;color:#a8a29e;
@@ -257,32 +274,65 @@
       margin:0 1px;
     }
 
-    @media(max-width:900px){
-      .tabs{
-        right: -110px; width: 105px;
-      }
-      .tab{
-        padding: 8px 10px; font-size: 9px;
-      }
+    @media(max-width:600px){
+      .tabs{right:-85px;gap:3px}
+      .tab{padding:6px 10px}
+      .tab-text{font-size:7px;letter-spacing:0.06em}
+      .kb-hint{display:none}
     }
 
-    @media(max-width:700px){
-      .tabs{
-        position: static; width: 100%; 
-        flex-direction: row; justify-content: center; 
-        gap: 5px; margin-top: 1rem; flex-wrap: wrap;
-      }
-      .tab{
-        transform: none !important;
-        flex-grow: 1; text-align: center; justify-content: center;
-      }
-      .tab:hover, .tab.active{
-        transform: translateY(-3px) !important;
-      }
-      .notebook{
-        width: 95vw;
-      }
+    /* =======================================================================
+       ESTILOS DEL JUEGO (LA PELOTA PREGUNTONA)
+       ======================================================================= */
+    .game-modal {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center;
     }
+    .game-modal-content {
+        background: #fdf6e3; width: 90%; max-width: 800px; height: 85vh;
+        border-radius: 15px; overflow-y: auto; position: relative; padding: 30px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #2c3e50;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .game-close-btn {
+        position: absolute; top: 15px; right: 15px; background: #e74c3c; color: white;
+        border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 18px;
+        cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold;
+    }
+    .game-modal-content h1 { color: #e74c3c; text-align: center; margin-bottom: 5px; font-size: 28px; }
+    .game-modal-content h2 { color: #f39c12; margin-top: 5px; font-size: 18px; text-align: center; }
+    .game-modal-content h3 { margin-top: 0; color: #e74c3c; font-size: 16px; }
+    .game-modal-content #setup-container { background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 500px; margin: 0 auto 20px auto; }
+    .game-modal-content .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+    .game-modal-content input[type="text"] { flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; outline: none; }
+    .game-modal-content input[type="text"]:focus { border-color: #f39c12; }
+    .game-modal-content button { background-color: #e74c3c; color: white; border: none; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: transform 0.1s, background-color 0.2s; }
+    .game-modal-content button:hover { background-color: #c0392b; transform: translateY(-2px); }
+    .game-modal-content button:active { transform: translateY(1px); }
+    .game-modal-content button:disabled { background-color: #bdc3c7; cursor: not-allowed; transform: none; }
+    .game-modal-content button.secondary { background-color: #f39c12; }
+    .game-modal-content button.secondary:hover { background-color: #e67e22; }
+    .game-modal-content #player-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .game-modal-content #player-list li { background: #ecf0f1; padding: 5px 10px; border-radius: 20px; font-size: 14px; display: flex; align-items: center; gap: 5px; }
+    .game-modal-content .remove-btn { background: #e74c3c; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .game-modal-content #game-container { display: none; width: 100%; max-width: 800px; margin: 0 auto; }
+    .game-modal-content .game-layout { display: flex; gap: 20px; flex-wrap: wrap; }
+    .game-modal-content .circle-area { flex: 2; min-width: 300px; background: #fff; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; }
+    .game-modal-content .players-circle { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; }
+    .game-modal-content .player-tag { background: #dcdde1; padding: 10px 15px; border-radius: 25px; font-weight: bold; transition: all 0.2s; position: relative; }
+    .game-modal-content .player-tag.active { background: #e74c3c; color: white; transform: scale(1.2); box-shadow: 0 0 15px rgba(231, 76, 60, 0.5); }
+    .game-modal-content .player-tag.played { border: 3px solid #f39c12; }
+    .game-modal-content .ball-indicator { font-size: 30px; position: absolute; top: -20px; right: -10px; display: none; }
+    .game-modal-content .player-tag.active .ball-indicator { display: block; }
+    .game-modal-content .reference-area { flex: 1; min-width: 250px; background: #fff; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 13px; }
+    .game-modal-content .reference-area ul { padding-left: 20px; margin: 0 0 15px 0; }
+    .game-modal-content .action-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 2001; }
+    .game-modal-content .action-modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; max-width: 500px; width: 90%; animation: gamePop 0.4s ease; }
+    @keyframes gamePop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .game-modal-content .action-modal h2 { color: #e74c3c; margin-top: 0; font-size: 24px; }
+    .game-modal-content .action-modal p { font-size: 18px; line-height: 1.5; }
+    .game-modal-content .question-box { background: #ffeaa7; padding: 15px; border-radius: 10px; margin: 15px 0; font-weight: bold; }
+
   </style>
 </head>
 <body>
@@ -319,14 +369,33 @@
     </div>
 
     <div class="tabs" id="tabs">
-      <div class="tab tab-1 active" data-section="0">Pr&aacute;ctica I</div>
-      <div class="tab tab-2" data-section="1">Pedagog&iacute;a</div>
-      <div class="tab tab-3" data-section="2">Did. Gral.</div>
-      <div class="tab tab-4" data-section="3">Rob&oacute;tica Ed. I</div>
-      <div class="tab tab-5" data-section="4">Mat. Aplicada</div>
-      <div class="tab tab-6" data-section="5">EDI DISE&Ntilde;O</div>
-      <div class="tab tab-7" data-section="6">Tecnolog&iacute;a I</div>
-      <div class="tab tab-8" data-section="7">Alfabetizaci&oacute;n</div>
+      <div class="tab tab-1 active" data-section="0">
+        <span class="tab-text">Encuentro 01</span>
+      </div>
+      <div class="tab tab-2" data-section="1">
+        <span class="tab-text">Encuentro 02</span>
+      </div>
+      <div class="tab tab-3" data-section="2">
+        <span class="tab-text">Encuentro 03</span>
+      </div>
+      <div class="tab tab-4" data-section="3">
+        <span class="tab-text">Encuentro 04</span>
+      </div>
+      <div class="tab tab-5" data-section="4">
+        <span class="tab-text">Encuentro 05</span>
+      </div>
+      <div class="tab tab-6" data-section="5">
+        <span class="tab-text">Encuentro 06</span>
+      </div>
+      <div class="tab tab-7" data-section="6">
+        <span class="tab-text">Encuentro 07</span>
+      </div>
+      <div class="tab tab-8" data-section="7">
+        <span class="tab-text">Encuentro 08</span>
+      </div>
+      <div class="tab tab-9" data-section="8">
+        <span class="tab-text">Encuentro 09</span>
+      </div>
     </div>
   </div>
 
@@ -336,135 +405,140 @@
     <button id="next-btn" disabled aria-label="Página siguiente">→</button>
   </div>
 
+  <div class="toast" id="toast">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    <span id="toast-text">Guardado</span>
+  </div>
+
   <div class="kb-hint">Usa <kbd>←</kbd> <kbd>→</kbd> para pasar páginas</div>
+
+  <!-- VENTANA MODAL DEL JUEGO -->
+  <div class="game-modal" id="game-modal-9">
+    <div class="game-modal-content">
+        <button class="game-close-btn" onclick="closeGame9()">X</button>
+        <h1>⚽ La Pelota Preguntona</h1>
+        <h2>Obras de Misericordia</h2>
+        <div id="setup-container">
+            <h3>¿Quiénes juegan?</h3>
+            <div class="input-group">
+                <input type="text" id="player-input" placeholder="Escribe un nombre..." onkeypress="g9_handleKeyPress(event)">
+                <button onclick="g9_addPlayer()">Añadir</button>
+            </div>
+            <ul id="player-list"></ul>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="secondary" onclick="g9_startGame()" id="start-btn" disabled>Comenzar Juego</button>
+            </div>
+        </div>
+        <div id="game-container">
+            <div class="game-layout">
+                <div class="circle-area">
+                    <div class="players-circle" id="players-circle"></div>
+                    <button id="play-btn" onclick="g9_throwBall()" style="font-size: 20px; padding: 15px 30px;">
+                        🎵 Pasar la pelota 🎵
+                    </button>
+                </div>
+                <div class="reference-area">
+                    <h3>Corporales</h3>
+                    <ul>
+                        <li>Dar de comer al hambriento</li>
+                        <li>Dar de beber al sediento</li>
+                        <li>Dar posada al necesitado</li>
+                        <li>Vestir al desnudo</li>
+                        <li>Visitar al enfermo</li>
+                        <li>Socorrer a los presos</li>
+                        <li>Enterrar a los muertos</li>
+                    </ul>
+                    <h3>Espirituales</h3>
+                    <ul>
+                        <li>Enseñar al que no sabe</li>
+                        <li>Dar buen consejo al que lo necesita</li>
+                        <li>Corregir al que está en error</li>
+                        <li>Perdonar las injurias</li>
+                        <li>Consolar al triste</li>
+                        <li>Sufrir con paciencia los defectos de los demás</li>
+                        <li>Rogar a Dios por vivos y difuntos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="action-modal" id="action-modal">
+            <div class="action-modal-content">
+                <h2 id="modal-title">¡Se detuvo la pelota!</h2>
+                <div id="modal-body"></div>
+                <button class="secondary" onclick="g9_closeModal()">Continuar Jugando</button>
+            </div>
+        </div>
+    </div>
+  </div>
 
   <script>
     /* ====================================================================
        CONTENIDO DE SECCIONES
        ==================================================================== */
 
-    const allItemsPracticaI = [
-      '<h1>El sentido de la formaci&oacute;n docente<span></span></h1>',
-      '<div class="item"><p><strong>Reflexi&oacute;n</strong></p></div>',
-      '<div class="item alt"><p>Una acci&oacute;n vuelve sobre s&iacute; misma</p></div>',
-      '<div class="item"><p>Postulan un v&iacute;nculo entre dos objetos o sujetos</p></div>',
-      '<div class="item alt"><p>En el campo de la formaci&oacute;n docente podemos hablar de un <strong>hacer que implica un decir</strong> de un individuo a otro, o a s&iacute; mismo</p></div>',
-      '<div class="item"><p>Obtener nuevas comprensiones y apreciaciones</p></div>',
-      '<div class="item alt"><p><strong>Describir los procesos reflexivos de los docentes:</strong> reflexi&oacute;n en la acci&oacute;n, metacognici&oacute;n, aprendizaje reflexivo, introspecci&oacute;n, retorno sobre s&iacute; mismo</p></div>',
-      '<div class="item"><p>El pensamiento o la reflexi&oacute;n es el <strong>discernimiento de la relaci&oacute;n</strong> que existe entre lo que tratamos de hacer y lo que ocurre como consecuencia</p></div>',
-      '<div class="item alt"><p><em>El pensar es un proceso de indagaci&oacute;n, de observar las cosas</em> (Dewey, 1989: 171)</p></div>',
-      '<div class="item"><p>La reflexi&oacute;n como un <strong>proceso cognitivo activo y deliberativo</strong> que incluye creencias y conocimientos de los profesores</p></div>',
-      '<div class="item alt"><p>Dise&ntilde;ar algo para salir de la incertidumbre, convocar a los conocimientos y experiencias anteriores y proceder a su cr&iacute;tica para hallar <strong>fundamentos te&oacute;ricos s&oacute;lidos</strong>, revisar y ampliar la observaci&oacute;n de los datos, as&iacute; como hurgar en la memoria para dar con circunstancias an&aacute;logas que ayuden a replantear el problema</p></div>',
-      '<div class="quote"><p>Es un proceso de inferencia donde se produce &ldquo;salto de lo conocido a lo desconocido&rdquo;</p></div>',
-      '<div class="item"><p>Las investigaciones sobre la reflexi&oacute;n acerca de la <strong>pr&aacute;ctica docente</strong> cobran fuerza a partir de los programas de estudio en relaci&oacute;n con &ldquo;el pensamiento del profesor&rdquo;</p></div>',
-      '<div class="item alt"><p>Una pregunta interesante que se formula <em>Eliane Ricard Fersing (1999)</em> es si es necesario debatir la relevancia de la <strong>pr&aacute;ctica reflexiva</strong> cuando uno trata de ser un docente, o si el <strong>ser docente ya implica una actividad reflexiva</strong></p></div>',
-      '<div class="item"><p>La reflexi&oacute;n no ten&iacute;a lugar como objeto de estudio porque estaban centrados solo en la <strong>actuaci&oacute;n de la propia labor pedag&oacute;gica</strong></p></div>',
-      '<div class="item alt"><p><strong>Analizar proyectos de formaci&oacute;n</strong> o de mejora de la pr&aacute;ctica docente</p></div>',
-
-      '<h2>Espacio, tiempo y condiciones para la reflexi&oacute;n</h2>',
-      '<div class="item"><p>La reflexi&oacute;n es una <strong>forma de pensamiento y una disposici&oacute;n</strong>. La distinci&oacute;n se&ntilde;alada solo intenta discriminar la acci&oacute;n rutinaria, impulsiva, de aquella persistente que muestra una <strong>actitud comprometida y una mente abierta</strong> que considera la pr&aacute;ctica a la luz de conocimientos y creencias <em>(Nofke y Brennan, 1998)</em></p></div>',
-      '<div class="item alt"><p>Existen <strong>diferentes tiempos de reflexi&oacute;n</strong>, ligados al momento en que se est&aacute; actuando, al finalizar la acci&oacute;n y sobre la propia reflexi&oacute;n</p></div>',
-      '<div class="item"><p>La reflexi&oacute;n en la acci&oacute;n poseer una <strong>funci&oacute;n cr&iacute;tica</strong> y pone en cuesti&oacute;n la estructura de suposici&oacute;n del conocimiento en la acci&oacute;n</p></div>',
-      '<div class="item alt"><p>Pensamos de manera cr&iacute;tica sobre el pensamiento que nos trajo esta situaci&oacute;n de apuro o a esta oportunidad y durante el proceso podemos <strong>reestructrar estrategias de acci&oacute;n</strong> as&iacute; como la comprensi&oacute;n de los fen&oacute;menos o las maneras de formular los problemas <em>(Sch&ouml;n, 1987: 3)</em></p></div>',
-      '<div class="item"><p><em>Liston y Zeichner (1996)</em> afirman que no podemos hablar de reflexi&oacute;n docente si este no se pregunta alguna vez por los <strong>valores que gu&iacute;an su trabajo</strong>, el contexto en el que lo hace y las presunciones y supuestos con los que desarrolla su tarea</p></div>',
-
-      '<h2>Modelos te&oacute;ricos para comprender el aprendizaje reflexivo</h2>',
-      '<div class="item"><p><em>Argyris y Sch&ouml;n (1974)</em> refiere a la relaci&oacute;n entre <strong>&ldquo;teor&iacute;as en uso&rdquo;</strong> y <strong>&ldquo;teor&iacute;as adoptadas&rdquo;</strong></p></div>',
-      '<div class="item alt"><p>Las personas <strong>planean, aplican y revisan</strong> sus acciones</p></div>',
-      '<div class="item"><p>Pueden conceptualizarse y verbalizarse</p></div>',
-      '<div class="item alt"><p>Las <strong>teor&iacute;as de uso</strong> gobiernan nuestras conductas y tienden a ser <strong>estructuras t&aacute;citas</strong></p></div>',
-      '<div class="item"><p>Las <strong>teor&iacute;as adoptadas</strong> son lo que pensamos o que deber&iacute;a hacerse</p></div>',
-      '<div class="item alt"><p>En la teor&iacute;a adoptada tiene que ver la <strong>acci&oacute;n para el contexto</strong></p></div>',
-      '<div class="item"><p>Es donde obedece y comunica a otros</p></div>',
-      '<div class="item alt"><p>La <strong>brecha entre la teor&iacute;a en uso y la teor&iacute;a adoptada</strong> delimita un espacio din&aacute;mico para la reflexi&oacute;n y para el di&aacute;logo</p></div>',
-      '<div class="item"><p>Mediada por la escritura, la reflexi&oacute;n puede realizarse con posterioridad en <strong>grupos de tutor&iacute;a</strong> e, incluso, en el intercambio con otros colegas que se est&eacute;n formando</p></div>',
-      '<div class="item alt"><p><em>M. Shepherd (2006)</em>, investigador de la Universidad de Brighton, Gran Breta&ntilde;a, ech&oacute; luz sobre los <strong>aprendizajes t&aacute;citos</strong> a trav&eacute;s de un proceso de reflexi&oacute;n del tipo <strong>double-loop</strong> (&ldquo;doble tuerca&rdquo; o &ldquo;bucle&rdquo;), realizado por medio del uso de &ldquo;diarios de reflexi&oacute;n&rdquo; acerca de las pr&aacute;cticas</p></div>',
-      '<div class="item"><p>El proceso supone <strong>cuestionar cr&iacute;ticamente</strong> el marco y el sistema de aprendizaje que subyacen a los prop&oacute;sitos y objetivos</p></div>',
-      '<div class="item alt"><p>Es probable que se produzcan <strong>cambios en las pr&aacute;cticas de ense&ntilde;anza</strong> y que devengan en mejores oportunidades para hacer accesible el contenido a los alumnos</p></div>',
-      '<div class="item"><p><em>Scanlon y Chemomas (1997)</em> describen <strong>tres etapas</strong> en el proceso de aprendizaje reflexivo:</p></div>',
-      '<div class="item alt"><p><strong>1)</strong> La conciencia o conocimiento que se inicia cuando el individuo reconoce la <strong>falta de informaci&oacute;n</strong> para explicar algo</p></div>',
-      '<div class="item"><p><strong>2)</strong> El <strong>an&aacute;lisis cr&iacute;tico</strong> que considera la conciencia sobre el propio conocimiento y la utilizaci&oacute;n de nueva informaci&oacute;n, as&iacute; como el desarrollo de procesos de s&iacute;ntesis y de evaluaci&oacute;n</p></div>',
-      '<div class="item alt"><p><strong>3)</strong> La <strong>nueva perspectiva</strong> que surge del resultado del an&aacute;lisis y utilizaci&oacute;n de la informaci&oacute;n nueva, e indica que el individuo ha adquirido comprensi&oacute;n del concepto, situaci&oacute;n o evento</p></div>',
-      '<div class="item"><p><em>Kember y Wong</em> establecen <strong>tres niveles de reflexi&oacute;n</strong> para categorizar a los estudiantes <em>(Kember et al., 1999)</em>:</p></div>',
-      '<div class="item alt"><p><strong>1) No reflexivo:</strong> el conocimiento previo no es revisado, ni cuestionada su validez</p></div>',
-      '<div class="item"><p><strong>2) Reflexivo:</strong> refiere tanto al contenido, es decir, al &ldquo;qu&eacute;&rdquo; reflexionamos, como al proceso vinculado a c&oacute;mo realizamos esas reflexiones</p></div>',
-      '<div class="item alt"><p><strong>3) Reflexivo cr&iacute;tico:</strong> <strong>cambio significativo de perspectiva</strong> en sus modos de interpretar las situaciones que analiza</p></div>',
-      '<div class="item"><p>Una pr&aacute;ctica cr&iacute;tica de la ense&ntilde;anza requiere el desarrollo de una <strong>gran capacidad para reflexionar en y sobre la acci&oacute;n</strong></p></div>',
-      '<div class="item alt"><p><em>Hatton y Smith (1995)</em> intentaba establecer los <strong>niveles de articulaci&oacute;n</strong> entre los datos de la experiencia personal y los saberes manejados por el docente:</p></div>',
-      '<div class="item"><p><strong>1) Descripciones no reflexivas:</strong> informan acerca de hechos o bibliograf&iacute;a</p></div>',
-      '<div class="item alt"><p><strong>2) Reflexiones descriptivas:</strong> intentan proveer razones basadas con frecuencia en opiniones personales y en experiencias previas m&aacute;s que en evidencias de la literatura o de la investigaci&oacute;n</p></div>',
-      '<div class="item"><p><strong>3) Reflexiones dialogadas:</strong> son una forma de discurso deliberativo con uno mismo, explorando posibles razones, estableciendo relaciones con conocimientos previos, con conocimientos producidos en investigaciones y con fuentes bibliogr&aacute;ficas</p></div>',
-      '<div class="item alt"><p><strong>4) Reflexiones cr&iacute;ticas:</strong> dan cuenta de las razones en la toma de decisiones, considerando el <strong>contexto hist&oacute;rico, social y pol&iacute;tico</strong>. Se basan en argumentos y razonamientos</p></div>',
-      '<div class="item"><p>Los contenidos podemos establecer que se refieren a:</p></div>',
-      '<div class="item alt"><p><strong>1)</strong> Sus historias como alumnos, como practicantes, como docentes o incluso sobre sus propios docentes. Recuperan <strong>experiencias que han dejado huellas</strong> y que les abren una serie de interrogaciones acerca del ejercicio de la docencia</p></div>',
-      '<div class="item"><p><strong>2)</strong> <em>Davies (1998)</em> plantea que los docentes refieren a esta cuesti&oacute;n cuando examinan sus trabajos en t&eacute;rminos de algunas teor&iacute;as y que estas ocupan algunas veces la <strong>voz del docente</strong></p></div>',
-      '<div class="item alt"><p><strong>3)</strong> Aspectos de su <strong>profesi&oacute;n base</strong>, entendida como aquella en la que el docente se form&oacute; en primera instancia y cuyos contenidos son los que ense&ntilde;a</p></div>',
-
-      '<h2>Problemas asociados con la reflexi&oacute;n</h2>',
-      '<div class="item"><p>Los docentes necesitan <strong>tiempo y oportunidad</strong> para que la reflexi&oacute;n ocurra y se convierta en un <strong>modo de trabajo y no en un ritual</strong></p></div>',
-      '<div class="item alt"><p>La <strong>falta de orientaci&oacute;n</strong> cuando la invitaci&oacute;n a reflexionar no es parte habitual del trabajo docente</p></div>',
-      '<div class="item"><p>Las reacciones posibles a las demandas de reflexi&oacute;n requieren cierta <strong>atenci&oacute;n de parte de los formadores</strong></p></div>',
-      '<div class="item alt"><p>Hacer expl&iacute;cito un proceso de reflexi&oacute;n, reconociendo <strong>debilidades, dudas, incertidumbres</strong>, aspectos personales de la vida profesional dentro de una instituci&oacute;n</p></div>',
-      '<div class="item"><p><em>Day (1999), Van Manen (1995) y Cole (1989)</em> reconocen algunas <strong>restricciones para ser reflexivo</strong>:</p></div>',
-      '<div class="item alt"><p>La consideraci&oacute;n de la reflexi&oacute;n como <strong>disruptiva, desestabilizadora y distractora</strong> del logro del buen desempe&ntilde;o de la tarea</p></div>',
-      '<div class="item"><p>La duda sobre su <strong>utilidad significativa</strong></p></div>',
-      '<div class="item alt"><p>Las creencias en el valor relativo del conocimiento, derivado de la reflexi&oacute;n personal y comparada con el producido por una <strong>racionalidad t&eacute;cnica</strong></p></div>',
-      '<div class="item"><p>La preocupaci&oacute;n de los docentes novatos por adquirir un <strong>conjunto de reglas acerca de c&oacute;mo hacer</strong>, lo que significa que no necesariamente tienen el deseo o la capacidad para comprometerse con una reflexi&oacute;n</p></div>',
-      '<div class="item alt"><p>La creencia de que algunas caracter&iacute;sticas del entorno, como la <strong>impredecibilidad o el cambio</strong>, pueden dificultar el compromiso con la reflexi&oacute;n</p></div>',
-      '<div class="item"><p>La <strong>falta de un lenguaje compartido</strong> para conversar sobre qu&eacute; es la reflexi&oacute;n y el proceso de reflexi&oacute;n</p></div>',
-
-      '<h2>Preguntas para la reflexi&oacute;n</h2>',
-      '<div class="item"><p><strong>1)</strong> Analiza la importancia de la reflexi&oacute;n como herramienta para el crecimiento profesional en la formaci&oacute;n docente. &iquest;De qu&eacute; manera contribuye a mejorar las pr&aacute;cticas pedag&oacute;gicas?</p></div>',
-      '<div class="item alt"><p><strong>2)</strong> Reflexiona sobre las condiciones y espacios necesarios para promover una pr&aacute;ctica reflexiva efectiva en la formaci&oacute;n de docentes. &iquest;Qu&eacute; dificultades se pueden presentar y c&oacute;mo podr&iacute;an superarse?</p></div>',
-      '<div class="item"><p><strong>3)</strong> &iquest;De qu&eacute; modo la reflexi&oacute;n puede fortalecer la autonom&iacute;a y la criticidad del docente en su ejercicio profesional?</p></div>',
-      '<div class="item alt"><p><strong>4)</strong> &iquest;Qu&eacute; fragmento del video (atendiendo a sus propias biograf&iacute;as escolares) los convoca a reflexionar sobre sus futuras pr&aacute;cticas docentes? Desarrollar brevemente la idea</p></div>',
-
-      '<h2>Respuestas</h2>',
-      '<div class="item"><p><strong>1)</strong> La reflexi&oacute;n es la herramienta clave para que el educador sea el propio director de su crecimiento profesional, construyendo un saber pedag&oacute;gico flexible y comprometido.</p></div>',
-      '<div class="item alt"><p><strong>2)</strong> A partir de los n&uacute;cleos conceptuales de los textos analizados, la promoci&oacute;n de una pr&aacute;ctica reflexiva efectiva implica comprenderla no como un hecho espont&aacute;neo, sino como una disposici&oacute;n que requiere ser construida y sostenida colectivamente.</p></div>',
-      '<div class="item"><p><strong>3)</strong> La reflexi&oacute;n fortalece la autonom&iacute;a porque dota al docente de fundamentos te&oacute;ricos s&oacute;lidos para salir de la incertidumbre por s&iacute; mismo, y potencia su criticidad porque lo posiciona no como un t&eacute;cnico que obedece y comunica a otros, sino como un intelectual capaz de examinar su propia labor a la luz de la &eacute;tica, la justicia social y el contexto pol&iacute;tico.</p></div>'
+    const allItemsEncuentro01 = [
+      '<h1>CUARESMA<span></span></h1>',
+      '<h2>TIEMPO DE CONVERSIÓN</h2>',
+      '<div class="item"><p>La Iglesia Católica nos enseña que tenemos 40 días para volver a acercarnos a Dios y volver a la gracia que nosotros mismos nos alejamos libremente.</p></div>',
+      '<div class="item alt"><p>El color litúrgico de este tiempo es el <strong>morado</strong> que significa luto, penitencia, espera y preparación.</p></div>',
+      '<div class="item"><p>Debemos prepararnos para renovar nuestra fe para así compartir con nuestro prójimo.</p></div>',
+      '<div class="item alt"><p>Tenemos que aprender a perdonar y a reconciliarnos con Dios y a los hermanos y así tomar nuestra cruz y alcanzar la gloria de la Resurrección.</p></div>',
+      '<div class="item"><p>En este tiempo los cristianos hacemos <strong>ayuno</strong>, <strong>limosna</strong> y <strong>oración</strong> ¿En qué consisten estas tres prácticas?</p></div>',
+      '<div class="item alt"><p><strong>Ayuno:</strong> Nos permite quitar lo malo de nuestras vidas, todo aquello que nos aparta de Dios.</p></div>',
+      '<div class="item"><p><strong>Limosna:</strong> Significa darse a los demás como vemos en las obras de misericordia desde nuestra humildad, desde nuestra miseria para con el prójimo.</p></div>',
+      '<div class="item alt"><p><strong>Oración:</strong> Esta contemplado por el ayuno y la limosna. La oración nos permite poder estar firme en estos dos puntos para poder llegar a una profunda conversión y a hacer buenas obras por Dios y por el prójimo.</p></div>'
     ];
 
-    const allItemsPedagogia = [
-      '<h2>PARADIGMAS EN EDUCACI&Oacute;N</h2>',
-      '<div class="item alt"><p><strong>Paradigma:</strong> es un sistema de creencias, principios, valores y premisas que determinan la visi&oacute;n que una determinada comunidad cient&iacute;fica tiene de la realidad, el tipo de preguntas y problemas que es leg&iacute;timo estudiar, as&iacute; como los m&eacute;todos y t&eacute;cnicas v&aacute;lidos para la b&uacute;squeda de respuestas y soluciones</p></div>',
-      '<div class="item"><p><strong>CUANTITATIVO &rarr; POSITIVISMO</strong></p></div>',
-      '<div class="item alt"><p><strong>CUALITATIVO &rarr; HERMEN&Eacute;UTICA &rarr; CONSTRUCTIVISTA</strong></p></div>',
-      '<div class="item"><p><strong>DIAL&Eacute;CTICA &rarr; SOCIO-CR&Iacute;TICO</strong></p></div>',
-      '<svg class="diagram" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg"><polygon points="110,15 205,165 15,165" fill="rgba(180,83,9,0.03)" stroke="#b45309" stroke-width="1.5" stroke-linejoin="round"/><text x="110" y="112" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#1c1917" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.1em">CONDUCTISMO</text></svg>',
-      '<h2>POSITIVISMO</h2>',
-      '<p style="margin:10px 0 6px 0"><strong>Influencias y contexto:</strong></p>',
-      '<div class="item"><p>MODERNIDAD</p></div>',
-      '<div class="item alt"><p>SURGIMIENTO DEL ESTADO</p></div>',
-      '<div class="item"><p>CIENCIA Y RAZON (SECULARISMO VS TEOCENTRISMO)</p></div>',
-      '<div class="item alt"><p>SOCIEDAD INDUSTRIALIZADA</p></div>',
-      '<div class="item"><p>SURGIMIENTO DE LA BURGUESIA</p></div>',
-      '<div class="item alt"><p>PEDAGOGIA ILUSTRADA</p></div>',
-      '<div class="item"><p>El pensamiento pedag&oacute;gico positivista consolid&oacute; la concepci&oacute;n burguesa de la educaci&oacute;n.</p></div>',
-      '<div class="item alt"><p><strong>Augusto Comte (1798-1857)</strong></p></div>',
-      '<div class="item"><p>Aceptaci&oacute;n del conocimiento cient&iacute;fico como &uacute;nica forma de conocimiento leg&iacute;timo y el rechazo a la metaf&iacute;sica como pseudociencia.</p></div>',
-      '<div class="item alt"><p>Una verdadera ciencia deber&iacute;a analizar todos los fen&oacute;menos, incluso los humanos, como hechos. Necesitaba ser una ciencia positiva.</p></div>',
-      '<div class="item"><p><strong>Hechos emp&iacute;ricos, observables</strong></p></div>',
-      '<div class="item alt"><p>La ciencia necesitaba ser neutra. Leyes naturales, en armon&iacute;a, regir&iacute;an la sociedad. El positivismo representaba la doctrina que consolidar&iacute;a el orden p&uacute;blico, desarrollando en las personas una &ldquo;sabia resignaci&oacute;n&rdquo; para su statu quo.</p></div>',
-      '<div class="item"><p><strong>ORDEN Y PROGRESO</strong></p></div>'
+    const allItemsEncuentro02 = [
+      '<h1>DOMINGO DE RAMOS Y LA ÚLTIMA CENA<span></span></h1>'
     ];
 
-    const allItemsDidactica = [
+    const allItemsEncuentro03 = [
+      '<h1>PASIÓN Y MUERTE<span></span></h1>'
     ];
 
-    const allItemsRoboticaEducativaI = [
+    const allItemsEncuentro04 = [
+      '<h1>PASCUA - RESURRECCIÓN<span></span></h1>'
     ];
 
-    const allItemsMatematicaAplicada = [
+    const allItemsEncuentro05 = [
+      '<h1>CRISTO NOS REDIMIÓ: EL PECADO Y LA CONVERSIÓN<span></span></h1>'
     ];
 
-    const allItemsEDISEÑO = [
+    const allItemsEncuentro06 = [
+      '<h1>LOS 10 MANDAMIENTOS<span></span></h1>'
     ];
 
-    const allItemsTecnologia = [
+    const allItemsEncuentro07 = [
+      '<h1>EL MANDAMIENTO DEL AMOR<span></span></h1>'
     ];
 
-    const allItemsAlfabetizacion = [
+    const allItemsEncuentro08 = [
+      '<h1>LAS BIENAVENTURANZAS<span></span></h1>'
+    ];
+
+    const allItemsEncuentro09 = [
+      '<h1>OBRAS DE MISERICORDIA<span></span></h1>',
+      '<div class="item no-bullet"><p><strong>¿Cuál es el primero y más importante de los mandamientos?</strong></p></div>',
+      '<div class="item alt no-bullet"><p>Amar a Dios sobre todas las cosas y al prójimo como a ti mismo.</p></div>',
+      '<div class="item no-bullet"><p><strong>¿Qué significa misericordia?</strong></p></div>',
+      '<div class="item alt no-bullet"><p>Miser = miseria<br>Cordia = del latín cor cordis = corazón</p></div>',
+      '<div class="item no-bullet"><p>Misericordia es ayudar al prójimo desde nuestras propias necesidades, o sea, despojando de querer saber todo, de que yo sé por eso te lo digo.</p></div>',
+      '<div class="item"><p><strong>1) Enseñar al que no sabe:</strong> Es poder transmitir lo que está en nuestras manos nuestro conocimiento y saber, pero sin destratar al que estamos enseñando</p></div>',
+      '<div class="item alt"><p><strong>2) Dar buen consejo al que lo necesita:</strong> Es no sentirse superiores, hablar cuando sea conveniente, cuando la otra persona te pida un consejo, porque no conocemos el contexto de la otra persona y no podemos hablar sin conocer su mundo</p></div>',
+      '<div class="item"><p><strong>3) Corregir al que se equivoca:</strong> Quiere decir que cuando vemos algo que no está bien, acercarnos y decirle a esa persona de una forma amorosa así como lo hizo Jesús; no ir y querer corregir sacando en cara lo malo que hizo y siempre tirando para abajo y nunca ayudándolo</p></div>',
+      '<div class="item alt"><p><strong>4) Perdonar las injurias:</strong> Es la obra de misericordia más jodida, ya que hay injurias que nos hacen mucho mal pero si no perdonamos nuestra vida no va a crecer, mientras que la vida del que nos lastimó siempre andará digamos "bien" y nosotros por querernos vengar estaremos deprimidos. El código para esto es PERDONAR SETENTA VECES SIETE, que significa perdonar siempre</p></div>',
+      '<div class="item"><p><strong>5) Consolar al que está triste:</strong> Muchas veces consolar al que está triste es estar con la otra persona, aunque sea en el silencio, sin decir nada, solo con nuestra presencia ya es suficiente para esa persona que está pasando mal</p></div>',
+      '<div class="item alt"><p><strong>6) Sufrir con paciencia los defectos de nuestros prójimos:</strong> No hay que dar por sentado y decir la famosa frase TE ENTIENDO. Muchas veces se nos acerca una persona a contarnos algo y para no querer escucharle le decimos esa frase TE ENTIENDO. Aprendamos a escuchar a esa persona en silencio y comprender en silencio lo que le está pasando sin dar un comentario que no sentís por lo mismo</p></div>',
+      '<div class="item"><p><strong>7) Rogar a Dios por los vivos y difuntos:</strong> El estar en constante oración nos permite estar cerca de Dios, nos ayuda a tener discernimiento de las cosas</p></div>',
+      '<div class="item alt"><p><strong>8) Visitar y cuidar a los enfermos:</strong> No es estar por estar, solo por cumplir. Es estar en comunicación para tener una buena comprensión</p></div>',
+      '<div class="item"><p><strong>9) Dar de comer al hambriento:</strong> No significa literal dar algo para comer al que tenga hambre porque eso hace cualquiera y se filma para un buen like, pero Dios nos enseña que nos hagamos pan para compartirnos con la sencillez que Jesús predicó a su Padre</p></div>',
+      '<div class="item alt"><p><strong>10) Dar de beber al sediento:</strong> Así como el punto 9, cualquiera te puede dar agua, pero saciar esa sed corporal volverá pero saciar desde el fuego del Espíritu Santo es lo que nos tenemos que proponer</p></div>',
+      '<div class="item"><p><strong>11) Dar albergue al peregrino:</strong> Hoy en día muchas personas ya no conocen a Dios y ni les importa Dios. Nadie sabe dar un consejo, todos se creen que saben todo y todos son expertos en el tema. Dar un abrazo sincero es el mejor albergue para el refugiado</p></div>',
+      '<div class="item alt"><p><strong>12) Vestir al desnudo:</strong> Esto es un tema muy delicado y complicado. Hoy con el tema de las redes sociales y la inteligencia artificial, así como el Papa León XIV menciona en su encíclica Magnifica Humanitas se está perdiendo la dignidad humana y esto es realmente horroroso de que estamos desvistiendo al que estaba vestido y lo estamos desnudando porque nos creemos superiores y creyendo que Dios no existe</p></div>',
+      '<div class="item"><p><strong>13) Redimir al cautivo:</strong> Esta obra es poder "liberar" del "pecado" a nuestro prójimo, teniendo en cuenta las obras anteriores</p></div>',
+      '<div class="item alt"><p><strong>14) Enterrar a los muertos:</strong> Un ser querido muy cercano, deja huellas inquebrantables en tu ser y dar el pésame todos lo hacen de rutina y por un simple decir. Sepamos dar un buen pésame desde el mismo sentimiento que está sufriendo esa persona</p></div>',
+      '<button class="game-btn-notebook" onclick="openGame9()">⚽ Jugar a la Pelota Preguntona</button>'
     ];
 
 
@@ -472,7 +546,7 @@
        SISTEMA DE PAGINACIÓN Y ANIMACIÓN
        ==================================================================== */
 
-    let activeItems = allItemsPracticaI;
+    let activeItems = allItemsEncuentro01;
     let pages = [];
     let pageItemRanges = [];
     let currentSpread = 0;
@@ -662,7 +736,6 @@
       setTimeout(() => { if (isFlipping) cleanup(); }, FLIP_DURATION + 300);
     }
 
-
     /* ====================================================================
        NAVEGACIÓN POR SECCIONES
        ==================================================================== */
@@ -692,14 +765,15 @@
 
       setTimeout(() => {
         switch (sectionIdx) {
-          case 0: showPaginatedSection(allItemsPracticaI); break;
-          case 1: showPaginatedSection(allItemsPedagogia); break;
-          case 2: showPaginatedSection(allItemsDidactica); break;
-          case 3: showPaginatedSection(allItemsRoboticaEducativaI); break;
-          case 4: showPaginatedSection(allItemsMatematicaAplicada); break;
-          case 5: showPaginatedSection(allItemsEDISEÑO); break;
-          case 6: showPaginatedSection(allItemsTecnologia); break;
-          case 7: showPaginatedSection(allItemsAlfabetizacion); break;
+          case 0: showPaginatedSection(allItemsEncuentro01); break;
+          case 1: showPaginatedSection(allItemsEncuentro02); break;
+          case 2: showPaginatedSection(allItemsEncuentro03); break;
+          case 3: showPaginatedSection(allItemsEncuentro04); break;
+          case 4: showPaginatedSection(allItemsEncuentro05); break;
+          case 5: showPaginatedSection(allItemsEncuentro06); break;
+          case 6: showPaginatedSection(allItemsEncuentro07); break;
+          case 7: showPaginatedSection(allItemsEncuentro08); break;
+          case 8: showPaginatedSection(allItemsEncuentro09); break;
           default: showPaginatedSection([]); break;
         }
         notebook.style.opacity = '1';
@@ -739,8 +813,176 @@
       }
     }, { passive: true });
 
-    window.addEventListener('load', paginate);
-    
+    let toastTimeout = null;
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-text').textContent = text;
+      clearTimeout(toastTimeout);
+      toast.classList.add('show');
+      toastTimeout = setTimeout(() => toast.classList.remove('show'), 1600);
+    }
+
+
+    /* ====================================================================
+       LÓGICA DEL JUEGO: LA PELOTA PREGUNTONA
+       ==================================================================== */
+
+    const g9_preguntas = [
+        "¿Por qué crees que es importante practicar las obras de misericordia?",
+        "¿Cuál de las obras corporales te parece más urgente hoy en día y por qué?",
+        "¿Te cuesta más realizar las obras espirituales o las corporales? ¿Por qué?",
+        "Nombra una forma concreta de 'Consolar al triste' en tu colegio o barrio.",
+        "¿Qué significa para ti 'Enterrar a los muertos' en la actualidad?",
+        "¿Cómo podemos 'Vestir al desnudo' además de dando ropa física?",
+        "¿Por qué 'Corregir al que está en error' es una obra de misericordia y no un acto de envidia o enojo?",
+        "Da un ejemplo de cómo 'Dar buen consejo' a un amigo que está por tomar una mala decisión.",
+        "¿De qué manera podemos 'Rogar a Dios por vivos y difuntos' en nuestra vida diaria?",
+        "Menciona una forma en la que podemos 'Enseñar al que no sabe' sin hacerle sentir menos.",
+        "¿Qué obra de misericordia crees que Practicó Jesús más veces durante su vida?",
+        "¿Por qué 'Perdonar las injurias' es considerado una obra espiritual y no solo una actitud personal?"
+    ];
+
+    let g9_players = [];
+    let g9_isPlaying = false;
+    let g9_currentActiveIndex = -1;
+
+    function openGame9() { document.getElementById('game-modal-9').style.display = 'flex'; }
+    function closeGame9() { document.getElementById('game-modal-9').style.display = 'none'; }
+
+    function g9_handleKeyPress(e) { if (e.key === 'Enter') g9_addPlayer(); }
+
+    function g9_addPlayer() {
+        const input = document.getElementById('player-input');
+        const name = input.value.trim();
+        if (name === '') return;
+        g9_players.push({ name: name, timesSelected: 0 });
+        input.value = '';
+        g9_renderPlayerList();
+        document.getElementById('start-btn').disabled = false;
+        input.focus();
+    }
+
+    function g9_removePlayer(index) {
+        g9_players.splice(index, 1);
+        g9_renderPlayerList();
+        if (g9_players.length === 0) document.getElementById('start-btn').disabled = true;
+    }
+
+    function g9_renderPlayerList() {
+        const list = document.getElementById('player-list');
+        list.innerHTML = '';
+        g9_players.forEach((p, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `${p.name} <button class="remove-btn" onclick="g9_removePlayer(${index})">X</button>`;
+            list.appendChild(li);
+        });
+    }
+
+    function g9_startGame() {
+        if (g9_players.length < 2) {
+            alert("Necesitas al menos 2 jugadores para formar un círculo.");
+            return;
+        }
+        document.getElementById('setup-container').style.display = 'none';
+        document.getElementById('game-container').style.display = 'block';
+        g9_renderCircle();
+    }
+
+    function g9_renderCircle() {
+        const circle = document.getElementById('players-circle');
+        circle.innerHTML = '';
+        g9_players.forEach((p, index) => {
+            const div = document.createElement('div');
+            div.className = 'player-tag';
+            if (p.timesSelected > 0) div.classList.add('played');
+            if (index === g9_currentActiveIndex) div.classList.add('active');
+            div.innerHTML = `<span class="ball-indicator">⚽</span>${p.name}`;
+            circle.appendChild(div);
+        });
+    }
+
+    function g9_throwBall() {
+        if (g9_isPlaying) return;
+        g9_isPlaying = true;
+        document.getElementById('play-btn').disabled = true;
+
+        const totalPlayers = g9_players.length;
+        const targetIndex = Math.floor(Math.random() * totalPlayers);
+        const steps = 80 + targetIndex; 
+        
+        let stepCount = 0;
+        let currentIdx = g9_currentActiveIndex >= 0 ? g9_currentActiveIndex : -1;
+
+        function animateStep() {
+            currentIdx = (currentIdx + 1) % totalPlayers;
+            g9_currentActiveIndex = currentIdx;
+            g9_renderCircle();
+            stepCount++;
+
+            if (stepCount >= steps) {
+                g9_isPlaying = false;
+                document.getElementById('play-btn').disabled = false;
+                g9_handleResult(currentIdx);
+            } else {
+                let stepsRemaining = steps - stepCount;
+                let speed = 100; 
+
+                if (stepsRemaining < 5) {
+                    speed = 1200; 
+                } else if (stepsRemaining < 15) {
+                    speed = 800; 
+                } else if (stepsRemaining < 25) {
+                    speed = 400; 
+                } else if (stepsRemaining < 35) {
+                    speed = 200; 
+                } else {
+                    speed = 100; 
+                }
+                
+                setTimeout(animateStep, speed);
+            }
+        }
+
+        animateStep();
+    }
+
+    function g9_handleResult(playerIndex) {
+        const player = g9_players[playerIndex];
+        player.timesSelected++;
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        modalTitle.innerText = `⚽ ¡Le tocó a ${player.name}!`;
+        if (player.timesSelected === 1) {
+            modalBody.innerHTML = `
+                <p>En voz alta, di <strong>una obra de misericordia espiritual</strong> y <strong>una obra de misericordia corporal</strong>.</p>
+                <p style="font-size: 14px; color: #7f8c8d;">(Puedes usar la lista de la derecha como ayuda si lo necesitas)</p>
+            `;
+        } else {
+            const randomQuestion = g9_preguntas[Math.floor(Math.random() * g9_preguntas.length)];
+            modalBody.innerHTML = `
+                <p>¡Esta es la vez número ${player.timesSelected} que te toca!</p>
+                <p>El grupo tiene derecho a hacerte una pregunta:</p>
+                <div class="question-box">"${randomQuestion}"</div>
+                <p>¡${player.name}, reflexiona y responde!</p>
+            `;
+        }
+        g9_renderCircle(); 
+        document.getElementById('action-modal').style.display = 'flex';
+    }
+
+    function g9_closeModal() {
+        document.getElementById('action-modal').style.display = 'none';
+    }
+
+
+    /* ====================================================================
+       INICIALIZACIÓN
+       ==================================================================== */
+
+    window.addEventListener('load', () => {
+      paginate();
+    });
+
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
